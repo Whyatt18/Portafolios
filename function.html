@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Encriptador y Desencriptador de Texto</title>
+</head>
+<body>
+
+<script>
+function encrypt(text, shift) {
+    let encryptedText = "";
+    for (let i = 0; i < text.length; i++) {
+        let char = text[i];
+        if (char.match(/[a-z]/i)) {
+            let code = text.charCodeAt(i);
+            if ((code >= 65) && (code <= 90))
+                char = String.fromCharCode(((code - 65 + shift) % 26) + 65);
+            else if ((code >= 97) && (code <= 122))
+                char = String.fromCharCode(((code - 97 + shift) % 26) + 97);
+        }
+        encryptedText += char;
+    }
+    return encryptedText;
+}
+
+function decrypt(encryptedText, shift) {
+    return encrypt(encryptedText, (26 - shift) % 26);
+}
+
+function encryptDecrypt() {
+    let text = document.getElementById("text").value;
+    let shift = parseInt(document.getElementById("shift").value);
+
+    let encryptedText = encrypt(text, shift);
+    document.getElementById("encryptedText").innerHTML = "Texto encriptado: " + encryptedText;
+
+    let decryptedText = decrypt(encryptedText, shift);
+    document.getElementById("decryptedText").innerHTML = "Texto desencriptado: " + decryptedText;
+}
+</script>
+
+<h2>Encriptador y Desencriptador de Texto</h2>
+
+<label for="text">Texto:</label><br>
+<textarea id="text" rows="4" cols="50"></textarea><br>
+
+<label for="shift">Número de desplazamiento:</label>
+<input type="number" id="shift"><br><br>
+
+<button onclick="encryptDecrypt()">Encriptar/Desencriptar</button><br><br>
+
+<p id="encryptedText"></p>
+<p id="decryptedText"></p>
+
+</body>
+</html>
